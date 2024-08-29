@@ -3,27 +3,47 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:17.1.6-ce.0
     container_name: gitlab
+    hostname: 'gitlab'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        # external_url rule: the protocol must be http://, can not use https://
+        external_url 'http://gitlab.enblitz.com'
+        gitlab_rails['gitlab_shell_ssh_port'] = 23
+        # Add any other gitlab.rb configuration here, each on its own line
+        # other
     networks:
       - web
     restart: always
-    hostname: 'gitlab'
     ports:
       - '8929:8929'
-      # - '80:80'
+      # - '9001:80'
       # - '443:443'
       - '2424:22'
     volumes:
-      - ./config:/etc/gitlab
-      - ./logs:/var/log/gitlab
-      - ./data:/var/opt/gitlab
-    shm_size: '256m'
+      - gitlab_config:/etc/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_data:/var/opt/gitlab
+    shm_size: '2gb'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gitlab.rule=Host(`gitlab.enblitz.com`)"
       - "traefik.http.routers.gitlab.entrypoints=web"
-      - "traefik.http.services.gitlab.loadbalancer.server.port=8929"
+      - "traefik.http.services.gitlab.loadbalancer.server.port=80"
+  runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - gitlab_runner:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
 
 # Define networks
 networks:
   web:
     external: true
+
+volumes:
+  gitlab_config:
+  gitlab_logs:
+  gitlab_data:
+  gitlab_runner:
