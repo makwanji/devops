@@ -3,8 +3,6 @@ services:
   jenkins:
     image: jenkins/jenkins
     container_name: jenkins
-    depends_on:
-      - traefik
     networks:
       - web
     # ports:
@@ -16,10 +14,8 @@ services:
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
     volumes:
       - jenkins_home:/var/jenkins_home
-
 volumes:
   jenkins_home:
-
 # Define networks
 networks:
   web:
