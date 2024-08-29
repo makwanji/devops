@@ -1,0 +1,22 @@
+---
+services:
+  grafana:
+    image: grafana/grafana:11.2.0-ubuntu
+    container_name: grafana
+    depends_on:
+      - traefik
+    networks:
+      - web
+    restart: unless-stopped
+    # ports:
+    #  - '3000:3000'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.enblitz.com`)"
+      - "traefik.http.routers.grafana.entrypoints=web"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
+# Define networks
+networks:
+  web:
+    external: true

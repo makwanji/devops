@@ -1,0 +1,29 @@
+---
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:17.1.6-ce.0
+    container_name: gitlab
+    networks:
+      - web
+    restart: always
+    hostname: 'gitlab'
+    ports:
+      - '8929:8929'
+      # - '80:80'
+      # - '443:443'
+      - '2424:22'
+    volumes:
+      - ./config:/etc/gitlab
+      - ./logs:/var/log/gitlab
+      - ./data:/var/opt/gitlab
+    shm_size: '256m'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitlab.rule=Host(`gitlab.enblitz.com`)"
+      - "traefik.http.routers.gitlab.entrypoints=web"
+      - "traefik.http.services.gitlab.loadbalancer.server.port=8929"
+
+# Define networks
+networks:
+  web:
+    external: true
