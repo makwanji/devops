@@ -8,7 +8,7 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         # external_url rule: the protocol must be http://, can not use https://
         external_url 'http://gitlab.enblitz.com'
-        gitlab_rails['gitlab_shell_ssh_port'] = 23
+        gitlab_rails['gitlab_shell_ssh_port'] = 2424
         # Add any other gitlab.rb configuration here, each on its own line
         # other
     networks:

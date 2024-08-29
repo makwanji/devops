@@ -13,6 +13,17 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`grafana.enblitz.com`)"
       - "traefik.http.routers.grafana.entrypoints=web"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    networks:
+      - web
+    restart: unless-stopped
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./rules.yml:/etc/prometheus/rules.yml"
+    ports:
+      - 9091:9090
 # Define networks
 networks:
   web:
