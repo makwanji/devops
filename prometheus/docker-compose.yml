@@ -1,0 +1,22 @@
+---
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    networks:
+      - web
+    restart: unless-stopped
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./rules.yml:/etc/prometheus/rules.yml"
+    ports:
+      - 9091:9090
+
+#volume
+volumes:
+  grafana-storage:
+
+# Define networks
+networks:
+  web:
+    external: true
