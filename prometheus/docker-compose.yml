@@ -1,20 +1,37 @@
 ---
 services:
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.54.1
     container_name: prometheus
     networks:
       - web
     restart: unless-stopped
+    # ports:
+    #   - "9090:9090"
     volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-      - "./rules.yml:/etc/prometheus/rules.yml"
-    ports:
-      - 9091:9090
+      - prometheus-config:/etc/prometheus
+    depends_on:
+      - config-fetcher
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.enblitz.com`)"
+      - "traefik.http.routers.prometheus.entrypoints=web"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+
+  config-fetcher:
+    image: alpine/git
+    volumes:
+      - prometheus-config:/etc/prometheus
+    command: >
+      /bin/sh -c "
+      git clone https://github.com/makwanji/devops.git /tmp/repo &&
+      cp /tmp/repo/prometheus/prometheus.yml /etc/prometheus/prometheus.yml &&
+      cp /tmp/repo/prometheus/rules.yml /etc/prometheus/rules.yml
+      "
 
 #volume
 volumes:
-  grafana-storage:
+  prometheus-config:
 
 # Define networks
 networks:
