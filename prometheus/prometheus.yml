@@ -1,11 +1,13 @@
 global:
-  scrape_interval: 10s
+  scrape_interval: 15s  # Scrape targets every 15 seconds
+
 scrape_configs:
- - job_name: prometheus
-   static_configs:
-    - targets:
-       - prometheus:9090
- - job_name: node
-   static_configs:
-    - targets:
-       - node-exporter:9100
+  # Scrape config for Node Exporter
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']  # Target for Node Exporter
+
+  # Scrape config for prometheus
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']  # Target for prometheus
