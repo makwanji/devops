@@ -1,5 +1,48 @@
 ---
 services:
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
+    networks:
+      - web
+    # network_mode: "host"
+    ports:
+      - "9323:8080"
+    volumes:
+      - "/:/rootfs"
+      - "/var/run:/var/run"
+      - "/sys:/sys"
+      - "/var/lib/docker/:/var/lib/docker"
+      - "/dev/disk/:/dev/disk"
+    depends_on:
+      - prometheus
+    privileged: true
+    devices:
+      - "/dev/kmsg"
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    networks:
+      - web
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 50M
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    depends_on:
+      - prometheus
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+
   prometheus:
     image: prom/prometheus:v2.54.1
     container_name: prometheus
@@ -24,7 +67,7 @@ services:
       - prometheus-config:/etc/prometheus
     command: >
       /bin/sh -c "
-      apt update && apt install -y git &&
+      apt update && apt install -y git && rm -rf /tmp/repo &&
       git clone https://github.com/makwanji/devops.git /tmp/repo &&
       cp /tmp/repo/prometheus/prometheus.yml /etc/prometheus/prometheus.yml &&
       cp /tmp/repo/prometheus/rules.yml /etc/prometheus/rules.yml
