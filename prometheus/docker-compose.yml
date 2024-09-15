@@ -19,11 +19,12 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   config-fetcher:
-    image: alpine/git
+    image: ubuntu:latest
     volumes:
       - prometheus-config:/etc/prometheus
     command: >
       /bin/sh -c "
+      apt update && apt install -y git &&
       git clone https://github.com/makwanji/devops.git /tmp/repo &&
       cp /tmp/repo/prometheus/prometheus.yml /etc/prometheus/prometheus.yml &&
       cp /tmp/repo/prometheus/rules.yml /etc/prometheus/rules.yml
