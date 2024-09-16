@@ -32,17 +32,17 @@ services:
       - "traefik.http.services.gitlab.loadbalancer.server.port=80"
   runner1:
     image: gitlab/gitlab-runner:latest
-    container_name: gitlab-runner
+    container_name: gitlab-runner1
     restart: always
     volumes:
-      - gitlab_runner:/etc/gitlab-runner
+      - gitlab_runner1:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
   runner2:
     image: gitlab/gitlab-runner:latest
-    container_name: gitlab-runner
+    container_name: gitlab-runner2
     restart: always
     volumes:
-      - gitlab_runner:/etc/gitlab-runner
+      - gitlab_runner2:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
 # Define networks
 networks:
@@ -53,4 +53,5 @@ volumes:
   gitlab_config:
   gitlab_logs:
   gitlab_data:
-  gitlab_runner:
+  gitlab_runner1:
+  gitlab_runner2:
