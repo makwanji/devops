@@ -20,5 +20,15 @@ oc get clusteroperators
 
 # get pods
 oc get pods
+```
 
+
+## Group
+
+```bash
+# create a group
+oc adm groups new dev
+
+# list group
+oc adm get groups
 ```
