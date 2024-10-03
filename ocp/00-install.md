@@ -3,7 +3,6 @@
 ### Download required software
 
 ```bash
-
 ## crc software
 cd ~/Downloads
 wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
@@ -20,26 +19,30 @@ wget https://github.com/openshift/okd/releases/download/4.5.0-0.okd-2020-07-14-1
 tar -xvf openshift-client-linux-4.5.0-0.okd-2020-07-14-153706-ga.tar.gz
 sudo mv oc kubectl /usr/local/bin/
 oc version
-
 ```
-
-https://github.com/makwanji/devops/blob/main/ocp/README.md
 
 ### Install required softwares
 
-Ref: https://docs.redhat.com/en/documentation/red_hat_openshift_local/2.41/html/getting_started_guide/installing#installing_red_hat_openshift_local
-
 ```bash
-sudo apt install qemu-kvm libvirt-daemon libvirt-daemon-system network-manager
+sudo apt install qemu-kvm libvirt-daemon libvirt-daemon-system network-manager virtiofsd
 ```
+
+## CRC Config
 
 ```bash
 crc status --log-level debug
 crc config set consent-telemetry no
+crc config set network-mode user
+crc config set cpus 10
+crc config set memory 49152 #48gb
+crc config set disk-size 120
+crc config set enable-cluster-monitoring true
+crc config set disable-update-check true
+crc config set skip-check-vsock true
 ```
 
 
-## Issue with Ubuntu 22.04
+## Issue: CRC Unable to start (Ubuntu 22.04)
 
 ```bash
 #https://github.com/crc-org/crc/wiki/VPN-support--with-an--userland-network-stack
@@ -52,3 +55,8 @@ crc setup
 crc start
 crc setup
 ```
+
+
+## Reference
+CRC Setup - https://blog.gulfsoft.com/2021/03/increasing-crc-vm-disk-size-for.html
+Install openshift - https://docs.redhat.com/en/documentation/red_hat_openshift_local/2.41/html/getting_started_guide/installing#installing_red_hat_openshift_local
