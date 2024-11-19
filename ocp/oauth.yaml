@@ -1,0 +1,36 @@
+apiVersion: config.openshift.io/v1
+kind: Authentication
+metadata:
+  annotations:
+    include.release.openshift.io/ibm-cloud-managed: "true"
+    include.release.openshift.io/self-managed-high-availability: "true"
+    include.release.openshift.io/single-node-developer: "true"
+    release.openshift.io/create-only: "true"
+  creationTimestamp: "2024-10-17T22:52:48Z"
+  generation: 2
+  name: cluster
+  ownerReferences:
+  - apiVersion: config.openshift.io/v1
+    kind: ClusterVersion
+    name: version
+    uid: 0e5b3f76-2e8a-414f-bf4b-02014cb49138
+  resourceVersion: "14481"
+  uid: 5c0f28e9-30f5-406c-9e1c-a22e3e86fdf4
+spec:
+  identityProviders:
+  - name: ex280-htpasswd 
+    mappingMethod: claim 
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        name: ex280-idp-secret 
+  oauthMetadata:
+    name: ""
+  serviceAccountIssuer: ""
+  type: ""
+  webhookTokenAuthenticator:
+    kubeConfig:
+      name: webhook-authentication-integrated-oauth
+status:
+  integratedOAuthMetadata:
+    name: oauth-openshift
