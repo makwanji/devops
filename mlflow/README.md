@@ -1,5 +1,17 @@
 # mlflow stack
 
+
+## Start Stack
+
+```bash
+./scripts/stop-stack.sh
+```
+
+## Stop Stack
+```bash
+./scripts/start-stack.sh
+```
+## Build Stack
 ```bash
 # Start stack
 docker-compose up -d --build
