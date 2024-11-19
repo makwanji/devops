@@ -40,6 +40,20 @@ services:
       - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRET_ACCESS_KEY}
 
+  db:
+      restart: always
+      image: mysql/mysql-server@sha256:5b40d96b11333570143d98d3a74100fefadb9abb17b27a95dbc9ad33544ec142
+      container_name: mlflow_db
+      ports:
+          - "3306:3306"
+      environment:
+          - MYSQL_DATABASE=${MYSQL_DATABASE}
+          - MYSQL_USER=${MYSQL_USER}
+          - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+          - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      volumes:
+          - dbdata:/var/lib/mysql
+
   mlflow:
     restart: always
     build: ./mlflow
@@ -59,10 +73,14 @@ services:
       --host 0.0.0.0
       --serve-artifacts
       --artifacts-destination s3://mlflow
+    # command: mlflow server --backend-store-uri mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE} --default-artifact-root s3://mlflow/ --host 0.0.0.0
+    # command: mlflow server --backend-store-uri mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE} --artifacts-destination s3://mlflow --host 0.0.0.0
     depends_on:
       - mlflow-postgres
       - minio-setup
+      - db
 
 volumes:
   postgres_data:
   minio_data:
+  dbdata:
