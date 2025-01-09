@@ -1,6 +1,7 @@
 services:
   consul:
     image: hashicorp/consul:latest
+    container_name: consul-server
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     volumes:
