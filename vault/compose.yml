@@ -1,0 +1,26 @@
+services:
+  vault:
+    image: hashicorp/vault:1.20
+    container_name: vault
+    networks:
+      - web
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK
+    command: server -dev
+    volumes:
+      - vault-data:/vault/file  # persistent storage
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vault.rule=Host(`vault.enblitz.com`)"
+      - "traefik.http.routers.vault.entrypoints=web"
+      - "traefik.http.services.vault.loadbalancer.server.port=8200"
+volumes:
+   vault-data:
+networks:
+  web:
+    external: true
