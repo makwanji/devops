@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_DB: appdb
+      VAULT_ADDR: http://vault:8200
+      VAULT_TOKEN: ${VAULT_TOKEN}  # token comes from your shell
+      SECRET_PATH: secret/db
+    entrypoint: >
+      /bin/bash -c "
+        apt-get update && apt-get install -y curl jq &&
+        until curl -s $VAULT_ADDR/v1/sys/health | grep -q '\"initialized\":true'; do
+          sleep 2;
+        done;
+        DB_PASSWORD=$(curl -s --header \"X-Vault-Token: $VAULT_TOKEN\" $VAULT_ADDR/v1/$SECRET_PATH | jq -r .data.data.password);
+        export POSTGRES_PASSWORD=$DB_PASSWORD;
+        exec docker-entrypoint.sh postgres
+      "
