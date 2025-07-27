@@ -1,5 +1,17 @@
 # mlflow stack
 
+
+## Start Stack
+
+```bash
+./scripts/stop-stack.sh
+```
+
+## Stop Stack
+```bash
+./scripts/start-stack.sh
+```
+## Build Stack
 ```bash
 # Start stack
 docker-compose up -d --build
@@ -33,3 +45,17 @@ postgres=# exit
 MLFlow UI: http://localhost:5001
 MinIO Console: http://localhost:9001
 PostgreSQL: localhost:5432 with postgres as username and password
+
+## ALB - Entrypoint
+
+https://minio.adnovumlabs.com
+https://mlflow.adnovumlabs.com
+
+
+
+# Refernce
+https://erikdao.com/machine-learning/production-ready-mlflow-setup-in-your-local-machine/
+
+
+aws --endpoint-url https://minio.adnovumlabs.com s3 ls
+
