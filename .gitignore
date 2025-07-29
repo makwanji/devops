@@ -2,3 +2,5 @@
 */.DS_Store
 
 .env
+*.bkp
+.DS_Store
