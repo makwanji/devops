@@ -1,0 +1,7 @@
+---
+global:
+  namespace: "vault"
+server:
+  service:
+    type: NodePort
+    nodePort: 30280
