@@ -99,5 +99,4 @@ kubectl describe node
 minikube config set cpus 4
 minikube config set memory 12288
 minikube start --apiserver-ips=192.168.2.41
-
 ```
