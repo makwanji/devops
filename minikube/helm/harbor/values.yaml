@@ -1,0 +1,18 @@
+---
+global:
+  namespace: "nexus"
+expose:
+  type: nodePort
+  nodePort:
+    name: harbor
+    ports:
+      http:
+        port: 80
+        nodePort: 30402
+  tls:
+    enabled: false
+    certSource: auto
+    auto:
+      commonName: ""
+    secret:
+      secretName: ""

@@ -1,0 +1,20 @@
+---
+global:
+  additionalLabels:
+    app.enblitz.com/type: components
+    app.enblitz.com/name: argocd
+
+# Configure the API server
+server:
+  # Disable Ingress (we’ll port-forward instead)
+  ingress:
+    enabled: false
+
+  # Expose via NodePort for easier Minikube access
+  service:
+    type: NodePort
+    nodePortHttp: 30180
+
+  # Allow insecure (self-signed) certs in dev
+  extraArgs:
+    - --insecure

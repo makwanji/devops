@@ -1,0 +1,21 @@
+# Vagrantfile for Ubuntu 24.04
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/noble64"  # Ubuntu 24.04 (Noble Numbat)
+  
+  # VM configuration
+  config.vm.hostname = "ubuntu-2404"
+  config.vm.network "public_network"
+
+  # Provider settings (VirtualBox example)
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "ubuntu-2404"
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  # Provisioning (optional)
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get upgrade -y
+  SHELL
+end
