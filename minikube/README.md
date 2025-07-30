@@ -88,3 +88,15 @@ kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   15m
 azureuser@jig-test:~$
 ```
 
+## Minikube reosurce tunning
+
+```bash
+### Check current usage
+minikube start --cpus=4 --memory=12288
+# Check usage
+kubectl describe node
+
+minikube config set cpus 4
+minikube config set memory 12288
+minikube start --apiserver-ips=192.168.2.41
+```
