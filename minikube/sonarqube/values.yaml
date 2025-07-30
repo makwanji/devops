@@ -1,0 +1,36 @@
+service:
+  type: NodePort
+  nodePort: 30680  # must be in range 30000-32767
+  port: 9000
+
+edition: "developer"
+
+monitoringPasscode: "sonar123"
+
+persistence:
+  enabled: true
+  storageClass: "standard"  # or the name of your default SC
+  size: 10Gi
+
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "500m"
+  limits:
+    memory: "4Gi"
+    cpu: "1"
+
+postgresql:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 15.5.0
+  postgresqlUsername: sonar
+  postgresqlPassword: sonarpass
+  postgresqlDatabase: sonarqube
+  primary:
+    persistence:
+      enabled: true
+      storageClass: "local-storage"
+      size: 10Gi
