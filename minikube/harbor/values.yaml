@@ -1,0 +1,33 @@
+---
+global:
+  namespace: "herbor"
+expose:
+  type: nodePort
+  nodePort:
+    name: harbor
+    ports:
+      http:
+        port: 80
+        nodePort: 30480
+  tls:
+    enabled: true
+    certSource: auto
+    auto:
+      commonName: herbor.rudrabiztech.in
+  database:
+    existingClaim: "database-data-harbor-database-0"
+    storageClass: ""
+    subPath: ""
+    accessMode: ReadWriteOnce
+    size: 2Gi
+existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+harborAdminPassword: "Harbor@12345"
+database:
+  internal:
+    image:
+      repository: goharbor/harbor-db
+      tag: v2.10.0 # or match your Harbor version
+core:
+  image:
+    repository: goharbor/harbor-core
+    tag: v2.10.0

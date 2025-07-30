@@ -50,6 +50,13 @@ minikube addons enable metallb
 minikube addons enable metrics-server
 ```
 
+## Expose minikube to access from laptop
+
+```bash
+nohup socat TCP-LISTEN:8443,fork TCP:192.168.49.2:8443 &
+ps -ef | grep socat
+```
+
 ## copy config
 
 ```bash
