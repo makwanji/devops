@@ -1,0 +1,7 @@
+
+
+-- Create a new user
+CREATE USER n8n WITH PASSWORD 'dbn8npass';
+CREATE DATABASE n8ndb;
+GRANT ALL PRIVILEGES ON DATABASE n8ndb TO n8n;
+

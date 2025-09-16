@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17.6
+    container_name: postgres
+    shm_size: 128mb
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=user123
+      - POSTGRES_DB=pgdb
+    networks:
+      - db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+      - postgres-data:/var/lib/postgresql/data
+volumes:
+   postgres-data:
+networks:
+  db:
+    external: true
