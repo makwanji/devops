@@ -1,0 +1,33 @@
+networks:
+  db:
+    name: db
+    driver: bridge
+    external: true
+
+volumes:
+  mysql_data:
+    driver: local
+
+services:
+  db:
+    container_name: db-mysql94
+    image: mysql:9.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql          # Persistent database data
+      - ./sql:/docker-entrypoint-initdb.d/
+    networks:
+      - db
